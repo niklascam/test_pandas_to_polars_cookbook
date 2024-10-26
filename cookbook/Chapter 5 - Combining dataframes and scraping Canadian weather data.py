@@ -58,7 +58,12 @@ weather_mar2012[:5]
 # This is much better now -- we only have columns with real data.
 
 # TODO: rewrite using Polars
-
+null_columns = [
+    col
+    for col in pl_weather_mar2012.columns
+    if pl_weather_mar2012[col].null_count() > 0
+]
+pl_weather_mar2012 = pl_weather_mar2012.drop(null_columns)
 
 # %%
 # Let's get rid of columns that we do not need.
@@ -68,12 +73,7 @@ weather_mar2012 = weather_mar2012.drop(["Year", "Month", "Day", "Time (LST)"], a
 weather_mar2012[:5]
 
 # TODO: redo this using polars
-null_columns = [
-    col
-    for col in pl_weather_mar2012.columns
-    if pl_weather_mar2012[col].null_count() > 0
-]
-pl_weather_mar2012 = pl_weather_mar2012.drop(null_columns)
+pl_weather_mar2012 = pl_weather_mar2012.drop(["Year", "Month", "Day", "Time (LST)"])
 
 # %%
 # When you look at the data frame, you see that some column names have some weird characters in them.
